@@ -38,7 +38,7 @@ class main extends PluginBase implements Listener{
         if($entity instanceof \pocketmine\entity\Zombie && $ev instanceof \pocketmine\event\entity\EntityDamageByEntityEvent){
             $id = $entity->getId();
             if(!isset($this->id[$id])){
-                $zombie = new CustomZombie($entity, $ev->getDamager());
+                $zombie = new CustomZombie($this, $entity, $ev->getDamager());
                 $task = new ZombieTask($this, $zombie);
                 $this->getScheduler()->scheduleRepeatingTask($task, 1);
                 $this->id[$id] = $task;

@@ -12,16 +12,18 @@ use pocketmine\math\Vector3;
 
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use soradore\ai\Task\TaskManager;
 
 class CustomZombie{
 
-    const SPEED = 0.4;//WalkingSpeed
+    const SPEED = 0.5;//WalkingSpeed
 
     public $target = null;
     public $tmpGoal; //Vevtor3
     public $goal; //Vector3
 
-    public function __construct(Entity $zombie, Vector3 $goal){
+    public function __construct($main, Entity $zombie, Vector3 $goal){
+        $this->main = $main;
         $this->zombie = $zombie;
         $this->goal = $goal;
         $this->setNextTmpGoal();
@@ -89,6 +91,7 @@ class CustomZombie{
 
     public function isTmpGoal(){
         if(abs($this->tmpGoal->x - $this->getX()) <= 0.5 && abs($this->tmpGoal->z - $this->getZ()) <= 0.5){
+            TaskManager::queryTask($this->main, $this->tmpGoal, $this->getWorld());
             return true;
         }
         return false;
@@ -193,20 +196,8 @@ class CustomZombie{
         $return = false;
         $level = $this->zombie->getLevel();
         $relFront = $this->getRelFront();
-        switch($this->zombie->getDirection()){
-            case 0:
-                $return = $level->getBlock($relFront);
-                break;
-            case 1:
-                $return = $level->getBlock($relFront);
-                break;
-            case 2:
-                $return = $level->getBlock($relFront);
-                break;
-            case 3:
-                $return = $level->getBlock($relFront);
-                break;
-        }
+        $return = $level->getBlock($relFront);
+                
         return $return->isSolid();
     }
 
@@ -215,20 +206,8 @@ class CustomZombie{
         $return = false;
         $level = $this->zombie->getLevel();
         $relRight = $this->getRelRight();
-        switch($this->zombie->getDirection()){
-            case 0:
-                $return = $level->getBlock($relRight);
-                break;
-            case 1:
-                $return = $level->getBlock($relRight);
-                break;
-            case 2:
-                $return = $level->getBlock($relRight);
-                break;
-            case 3:
-                $return = $level->getBlock($relRight);
-                break;
-        }
+        $return = $level->getBlock($relRight);
+                
         return $return->isSolid();
     }
 
@@ -237,20 +216,8 @@ class CustomZombie{
         $return = false;
         $level = $this->zombie->getLevel();
         $relLeft = $this->getRelLeft();
-        switch($this->zombie->getDirection()){
-            case 0:
-                $return = $level->getBlock($relLeft);
-                break;
-            case 1:
-                $return = $level->getBlock($relLeft);
-                break;
-            case 2:
-                $return = $level->getBlock($relLeft);
-                break;
-            case 3:
-                $return = $level->getBlock($relLeft);
-                break;
-        }
+        $return = $level->getBlock($relLeft);
+               
         return $return->isSolid();
     }
 
